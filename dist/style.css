@@ -594,3 +594,8 @@ video {
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
+
+.highlighted {
+  --tw-bg-opacity: 1;
+  background-color: rgb(134 239 172 / var(--tw-bg-opacity, 1));
+}
