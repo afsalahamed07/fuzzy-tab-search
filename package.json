@@ -1,0 +1,22 @@
+{
+  "name": "fuzzy-tab-search",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "webpack --config webpack.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "eslint": "^9.15.0",
+    "prettier": "^3.4.1"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.15",
+    "webpack": "^5.96.1",
+    "webpack-cli": "^5.1.4"
+  }
+}
