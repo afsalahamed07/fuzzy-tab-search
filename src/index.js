@@ -2,34 +2,51 @@ import { fuzzyMatch } from "./fuzzySearch.js";
 import { mainDiv, tabList, search } from "./elements.js";
 
 mainDiv.appendChild(tabList);
+mainDiv.appendChild(search);
 
-function fetchAndDisplayTabs() {
-  browser.tabs.query({}, (tabs) => {
-    tabList.innerHTML = ""; // Clear previous results
-    const query = search.value.trim();
+function displayTabs(tabs) {
+  tabList.innerHTML = ""; // Clear previous results
+  const query = search.value.trim();
 
-    const filteredTabs = tabs.filter(
-      (tab) => fuzzyMatch(query, tab.title) || fuzzyMatch(query, tab.url),
-    );
+  const filteredTabs = tabs.filter(
+    (tab) => fuzzyMatch(query, tab.title) || fuzzyMatch(query, tab.url),
+  );
 
-    filteredTabs.reverse();
+  filteredTabs.reverse();
 
-    console.log(filteredTabs);
+  console.log(filteredTabs);
 
-    filteredTabs.forEach((tab) => {
-      const listItem = document.createElement("li");
-      listItem.textContent = tab.title;
+  filteredTabs.forEach((tab) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = tab.title;
 
-      listItem.addEventListener("click", () => {
-        chrome.tabs.highlight({ tabs: tab.index }, () => {
-          console.log("Switched to tab:", tab.title);
-        });
+    listItem.addEventListener("click", () => {
+      browser.runtime.sendMessage({
+        action: "highlightTab",
+        tabIndex: tab.index,
       });
 
-      tabList.appendChild(listItem);
+      document.body.removeChild(mainDiv);
     });
+
+    tabList.appendChild(listItem);
   });
 }
+
+function fetchAndDisplayTabs() {
+  const searchQuery = search.value;
+
+  // Request tab information from the background script
+  browser.runtime.sendMessage({ action: "getTabs" }, (tabs) => {
+    if (tabs) {
+      displayTabs(tabs, searchQuery);
+    } else {
+      console.error("Failed to fetch tabs.");
+    }
+  });
+}
+
+console.log("Hello");
 
 document.addEventListener("keydown", function (event) {
   // Check if the Control key is pressed and the F key is pressed

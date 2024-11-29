@@ -3,6 +3,9 @@
   "name": "Fuzzy Tab Finder",
   "version": "1.0",
   "permissions": ["tabs", "activeTab"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],

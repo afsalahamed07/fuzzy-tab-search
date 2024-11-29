@@ -1,11 +1,11 @@
 const mainDiv = document.createElement("div");
-mainDiv.classList.add("main");
+mainDiv.classList.add("fuzzy-tab-search-parent");
 
 const tabList = document.createElement("ul");
-tabList.classList.add("tab-list");
+tabList.classList.add("fuzzy-tab-search-tab-list");
 
 const search = document.createElement("input");
-search.classList.add("search-box");
+search.classList.add("fuzzy-tab-search-search-box");
 search.autofocus = true;
 
 export { mainDiv, tabList, search };

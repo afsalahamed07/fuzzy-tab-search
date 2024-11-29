@@ -2,22 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-.main {
-  @apply absolute flex flex-col gap-4 p-4;
+.fuzzy-tab-search-parent {
+  @apply absolute flex flex-col gap-4 p-4 top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2
+  bg-gray-500/90 w-3/4 h-3/4;
 }
 
-.tab-list {
-  @apply flex flex-col;
+.fuzzy-tab-search-tab-list {
+  @apply grow flex flex-col border border-white rounded-lg;
 
   li {
-    @apply p-4 cursor-pointer hover:bg-green-300 rounded-lg;
+    @apply py-1 px-4 cursor-pointer text-white hover:bg-gray-300;
   }
 }
 
-.search-box {
-  @apply p-4 bg-gray-300 rounded-lg focus:outline-none;
-}
-
-.highlighted {
-  @apply bg-green-300;
+.fuzzy-tab-search-search-box {
+  @apply px-4 py-2 bg-gray-300 rounded-lg focus:outline-none;
 }
