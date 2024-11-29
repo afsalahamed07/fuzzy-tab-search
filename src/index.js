@@ -1,13 +1,12 @@
 import { fuzzyMatch } from "./fuzzySearch.js";
+import { mainDiv, tabList, search } from "./elements.js";
 
-const tabList = document.getElementById("tab-list");
-const searchBox = document.getElementById("searchBox");
-const higlighted = document.getElementById("highlighted");
+mainDiv.appendChild(tabList);
 
 function fetchAndDisplayTabs() {
   browser.tabs.query({}, (tabs) => {
     tabList.innerHTML = ""; // Clear previous results
-    const query = searchBox.value.trim();
+    const query = search.value.trim();
 
     const filteredTabs = tabs.filter(
       (tab) => fuzzyMatch(query, tab.title) || fuzzyMatch(query, tab.url),
@@ -32,10 +31,15 @@ function fetchAndDisplayTabs() {
   });
 }
 
-// Event listener for input
-document
-  .getElementById("searchBox")
-  .addEventListener("input", fetchAndDisplayTabs);
+document.addEventListener("keydown", function (event) {
+  // Check if the Control key is pressed and the F key is pressed
+  if (event.ctrlKey && event.key === "f") {
+    fetchAndDisplayTabs();
+    event.preventDefault(); // Prevent the default browser action (e.g., opening the search bar)
+    document.body.appendChild(mainDiv);
+    console.log("test");
+  }
+});
 
-// Initial tab loading
-document.addEventListener("DOMContentLoaded", fetchAndDisplayTabs);
+// Event listener for input
+search.addEventListener("input", fetchAndDisplayTabs);

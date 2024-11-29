@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "webpack --config webpack.config.js"
+    "compile": "webpack --config webpack.config.js",
+    "watch": "webpack --watch"
   },
   "keywords": [],
   "author": "",

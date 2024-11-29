@@ -2,7 +2,14 @@
   "manifest_version": 3,
   "name": "Fuzzy Tab Finder",
   "version": "1.0",
-  "permissions": ["tabs"],
+  "permissions": ["tabs", "activeTab"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"],
+      "css": ["styles.css"]
+    }
+  ],
   "action": {
     "default_popup": "dist/index.html"
   },

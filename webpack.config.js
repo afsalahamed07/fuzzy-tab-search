@@ -6,12 +6,11 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-console.log(__dirname);
-
 export default {
   entry: "./src/index.js",
+  devtool: "inline-source-map",
   output: {
-    filename: "main.js",
-    path: path.resolve(__dirname, "dist"),
+    filename: "content-script.js",
+    path: __dirname,
   },
 };

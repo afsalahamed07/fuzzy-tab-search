@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .main {
-  @apply flex flex-col gap-4 p-4;
+  @apply absolute flex flex-col gap-4 p-4;
 }
 
 .tab-list {
