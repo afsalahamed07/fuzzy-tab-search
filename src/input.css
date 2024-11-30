@@ -3,18 +3,18 @@
 @tailwind utilities;
 
 .fuzzy-tab-search-parent {
-  @apply absolute flex flex-col gap-4 p-4 top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2
-  bg-gray-500/90 w-3/4 h-3/4;
+  @apply fixed flex flex-col gap-4 p-4 top-1/2 left-1/2 z-[100] -translate-x-1/2 -translate-y-1/2
+  bg-[#191724]/95 w-3/4 h-3/4 text-lg font-mono rounded-lg;
 }
 
 .fuzzy-tab-search-tab-list {
-  @apply grow flex flex-col border border-white rounded-lg;
+  @apply grow flex flex-col justify-end border border-white rounded-lg overflow-y-auto;
 
   li {
-    @apply py-1 px-4 cursor-pointer text-white hover:bg-gray-300;
+    @apply py-1 px-4 cursor-pointer text-white hover:bg-gray-500 text-lg font-mono;
   }
 }
 
 .fuzzy-tab-search-search-box {
-  @apply px-4 py-2 bg-gray-300 rounded-lg focus:outline-none;
+  @apply px-4 py-2 border border-white bg-[#191724]/95 rounded-lg focus:outline-none text-white;
 }

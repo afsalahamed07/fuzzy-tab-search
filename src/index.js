@@ -9,7 +9,7 @@ function displayTabs(tabs) {
   const query = search.value.trim();
 
   const filteredTabs = tabs.filter(
-    (tab) => fuzzyMatch(query, tab.title) || fuzzyMatch(query, tab.url),
+    (tab) => fuzzyMatch(query, tab.url) || fuzzyMatch(query, tab.url),
   );
 
   filteredTabs.reverse();
@@ -18,7 +18,10 @@ function displayTabs(tabs) {
 
   filteredTabs.forEach((tab) => {
     const listItem = document.createElement("li");
-    listItem.textContent = tab.title;
+    const hostname = new URL(tab.url).hostname;
+
+    listItem.textContent = hostname + " : " + tab.title;
+    console.log(hostname);
 
     listItem.addEventListener("click", () => {
       browser.runtime.sendMessage({
@@ -46,15 +49,22 @@ function fetchAndDisplayTabs() {
   });
 }
 
-console.log("Hello");
-
 document.addEventListener("keydown", function (event) {
   // Check if the Control key is pressed and the F key is pressed
   if (event.ctrlKey && event.key === "f") {
+    search.value = "";
     fetchAndDisplayTabs();
     event.preventDefault(); // Prevent the default browser action (e.g., opening the search bar)
     document.body.appendChild(mainDiv);
+    search.focus();
     console.log("test");
+  }
+});
+
+document.addEventListener("keydown", function (event) {
+  // Check if the Control key is pressed and the F key is pressed
+  if (event.ctrlKey && event.key === "q") {
+    document.body.removeChild(mainDiv);
   }
 });
 

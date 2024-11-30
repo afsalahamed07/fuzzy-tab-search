@@ -1,5 +1,6 @@
 const mainDiv = document.createElement("div");
 mainDiv.classList.add("fuzzy-tab-search-parent");
+mainDiv.tabIndex = 0;
 
 const tabList = document.createElement("ul");
 tabList.classList.add("fuzzy-tab-search-tab-list");
