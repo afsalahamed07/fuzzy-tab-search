@@ -4,24 +4,30 @@ import { mainDiv, tabList, search } from "./elements.js";
 mainDiv.appendChild(tabList);
 mainDiv.appendChild(search);
 
+let selectedList;
+
 function displayTabs(tabs) {
   tabList.innerHTML = ""; // Clear previous results
   const query = search.value.trim();
 
   const filteredTabs = tabs.filter(
-    (tab) => fuzzyMatch(query, tab.url) || fuzzyMatch(query, tab.url),
+    (tab) => fuzzyMatch(query, tab.title) || fuzzyMatch(query, tab.url),
   );
 
   filteredTabs.reverse();
 
   console.log(filteredTabs);
 
-  filteredTabs.forEach((tab) => {
+  filteredTabs.forEach((tab, index, array) => {
     const listItem = document.createElement("li");
+    listItem.classList.add("fuzzy-tab-search-tab-list-item");
     const hostname = new URL(tab.url).hostname;
-
     listItem.textContent = hostname + " : " + tab.title;
-    console.log(hostname);
+
+    if (index === array.length - 1) {
+      selectedList = listItem;
+      selectedList.classList.add("bg-gray-500");
+    }
 
     listItem.addEventListener("click", () => {
       browser.runtime.sendMessage({
@@ -61,12 +67,31 @@ document.addEventListener("keydown", function (event) {
   }
 });
 
-document.addEventListener("keydown", function (event) {
+mainDiv.addEventListener("keydown", function (event) {
   // Check if the Control key is pressed and the F key is pressed
-  if (event.ctrlKey && event.key === "q") {
+  if (event.key === "Escape") {
     document.body.removeChild(mainDiv);
   }
 });
 
 // Event listener for input
 search.addEventListener("input", fetchAndDisplayTabs);
+
+search.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    selectedList.click();
+  } else if (event.ctrlKey && event.key === "p") {
+    if (selectedList.previousElementSibling) {
+      selectedList.classList.remove("bg-gray-500"); // Remove current selection
+      selectedList = selectedList.previousElementSibling; // Update reference
+      selectedList.classList.add("bg-gray-500"); // Highlight new selection
+    }
+  } else if (event.ctrlKey && event.key === "n") {
+    // Move to the next sibling
+    if (selectedList.nextElementSibling) {
+      selectedList.classList.remove("bg-gray-500"); // Remove current selection
+      selectedList = selectedList.nextElementSibling; // Update reference
+      selectedList.classList.add("bg-gray-500"); // Highlight new selection
+    }
+  }
+});
