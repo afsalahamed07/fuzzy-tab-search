@@ -1,8 +1,13 @@
 import { fuzzyMatch } from "./fuzzySearch.js";
 import { mainDiv, tabList, search } from "./elements.js";
+import Fuse from "fuse.js";
 
 mainDiv.appendChild(tabList);
 mainDiv.appendChild(search);
+
+const fuseOptions = {
+  keys: ["title", "url"],
+};
 
 let selectedList;
 
@@ -10,13 +15,16 @@ function displayTabs(tabs) {
   tabList.innerHTML = ""; // Clear previous results
   const query = search.value.trim();
 
-  const filteredTabs = tabs.filter(
-    (tab) => fuzzyMatch(query, tab.title) || fuzzyMatch(query, tab.url),
-  );
+  // const filteredTabs = tabs.filter(
+  //   (tab) => fuzzyMatch(query, tab.title) || fuzzyMatch(query, tab.url),
+  // );
+  //
+  const fuse = new Fuse(tabs, fuseOptions);
+
+  const filteredTabs =
+    query === "" ? tabs : fuse.search(query).map((result) => result.item);
 
   filteredTabs.reverse();
-
-  console.log(filteredTabs);
 
   filteredTabs.forEach((tab, index, array) => {
     const listItem = document.createElement("li");
