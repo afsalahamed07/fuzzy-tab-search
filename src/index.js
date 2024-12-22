@@ -1,4 +1,3 @@
-import { fuzzyMatch } from "./fuzzySearch.js";
 import { mainDiv, tabList, search } from "./elements.js";
 import Fuse from "fuse.js";
 

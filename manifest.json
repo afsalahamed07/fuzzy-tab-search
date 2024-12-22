@@ -15,9 +15,5 @@
   ],
   "action": {
     "default_popup": "dist/index.html"
-  },
-  "background": {
-    "scripts": ["background.js"]
   }
 }
-

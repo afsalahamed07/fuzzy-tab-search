@@ -8,11 +8,11 @@
 }
 
 .fuzzy-tab-search-tab-list {
-  @apply grow flex flex-col justify-end border-solid border-white rounded-lg overflow-y-auto;
+  @apply grow flex flex-col justify-end border border-solid border-white rounded-lg overflow-scroll;
 }
 
 .fuzzy-tab-search-tab-list-item {
-  @apply py-1 px-4 cursor-pointer text-white text-lg font-mono;
+  @apply py-[4px] px-[16px] cursor-pointer text-white text-[16px] font-mono;
 }
 
 .fuzzy-tab-search-search-box {
