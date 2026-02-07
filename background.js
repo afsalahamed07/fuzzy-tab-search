@@ -1,15 +1,22 @@
+function sendAllTabs(sendResponse) {
+  chrome.tabs.query({}).then((tabs) => {
+    sendResponse(tabs);
+  });
+}
+
+function focusTab(tabIndex) {
+  chrome.tabs.highlight({ tabs: tabIndex });
+}
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "getTabs") {
-    chrome.tabs.query({}).then((tabs) => {
-      sendResponse(tabs); // Send the tabs back to the content script
-    });
-    return true; // Indicate that the response will be sent asynchronously
+    sendAllTabs(sendResponse);
+    return true;
   }
 
   if (message.action === "highlightTab") {
-    const { tabIndex } = message;
-    chrome.tabs.highlight({ tabs: tabIndex }).then(() => {
-      console.log(`Switched to tab at index ${tabIndex}`);
-    });
+    focusTab(message.tabIndex);
   }
+
+  return false;
 });

@@ -1,46 +1,81 @@
 .fuzzy-tab-search-parent {
+  --overlay-bg: #0f1116;
+  --surface-bg: #171a21;
+  --surface-bg-hover: #1f2430;
+  --surface-bg-selected: #2a3040;
+  --text-color: #e6e9ef;
+  --muted-text-color: #a8b0bf;
+  --border-color: #2f3545;
+
   position: fixed;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 4px;
+  gap: 8px;
+  padding: 10px;
   top: 50%;
   left: 50%;
   z-index: 999999;
   transform: translate(-50%, -50%);
-  background-color: #191724;
-  width: 75%;
-  height: 75%;
-  font-size: 12px;
-  font-family: monospace;
-  border-radius: 2px;
+  background-color: var(--overlay-bg);
+  width: min(920px, 85vw);
+  height: min(520px, 75vh);
+  font-size: 14px;
+  font-family: "JetBrains Mono", "SFMono-Regular", Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
 }
 
 .fuzzy-tab-search-tab-list {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  border: 1px solid white;
-  border-style: solid;
-  border-radius: 2px;
-  overflow-y: scroll;
+  justify-content: flex-start;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  overflow-y: auto;
   overflow-x: hidden;
+  background-color: var(--surface-bg);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .fuzzy-tab-search-tab-list-item {
-  padding: 4px 16px;
+  padding: 8px 12px;
   cursor: pointer;
-  color: white;
-  font-size: 16px;
-  font-family: monospace;
+  color: var(--text-color);
+  font-size: 14px;
+  font-family: inherit;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fuzzy-tab-search-tab-list-item:hover {
+  background-color: var(--surface-bg-hover);
 }
 
 .fuzzy-tab-search-search-box {
-  padding: 2px 4px;
-  border: 1px solid white;
-  background-color: rgba(25, 23, 36, 0.95);
-  border-radius: 2px;
-  outline: none;
-  color: white;
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  background-color: var(--surface-bg);
+  border-radius: 4px;
+  color: var(--text-color);
+}
+
+.fuzzy-tab-search-search-box::placeholder {
+  color: var(--muted-text-color);
+}
+
+.fuzzy-tab-search-search-box:focus {
+  outline: 1px solid var(--surface-bg-selected);
+  border-color: var(--surface-bg-selected);
+}
+
+.fuzzy-tab-search-tab-list-item.is-selected {
+  background-color: var(--surface-bg-selected);
 }
