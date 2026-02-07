@@ -14,7 +14,7 @@ Inspired by Neovim Telescope and fzf-style workflows.
 
 ## Preview
 
-![Overlay preview](./docs/overlay.png)
+![Overlay preview](./docs/demo.gif)
 
 ## Development
 
