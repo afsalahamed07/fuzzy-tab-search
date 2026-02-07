@@ -33,11 +33,11 @@ function displayTabs(tabs) {
 
     if (index === array.length - 1) {
       selectedList = listItem;
-      selectedList.classList.add("bg-gray-500");
+      selectedList.style.backgroundColor = "gray"; // Highlight new selection
     }
 
     listItem.addEventListener("click", () => {
-      browser.runtime.sendMessage({
+      chrome.runtime.sendMessage({
         action: "highlightTab",
         tabIndex: tab.index,
       });
@@ -53,7 +53,7 @@ function fetchAndDisplayTabs() {
   const searchQuery = search.value;
 
   // Request tab information from the background script
-  browser.runtime.sendMessage({ action: "getTabs" }, (tabs) => {
+  chrome.runtime.sendMessage({ action: "getTabs" }, (tabs) => {
     if (tabs) {
       displayTabs(tabs, searchQuery);
     } else {
@@ -89,16 +89,16 @@ search.addEventListener("keydown", function (event) {
     selectedList.click();
   } else if (event.ctrlKey && event.key === "p") {
     if (selectedList.previousElementSibling) {
-      selectedList.classList.remove("bg-gray-500"); // Remove current selection
+      selectedList.style.backgroundColor = ""; // Remove current selection
       selectedList = selectedList.previousElementSibling; // Update reference
-      selectedList.classList.add("bg-gray-500"); // Highlight new selection
+      selectedList.style.backgroundColor = "gray"; // Highlight new selection
     }
   } else if (event.ctrlKey && event.key === "n") {
     // Move to the next sibling
     if (selectedList.nextElementSibling) {
-      selectedList.classList.remove("bg-gray-500"); // Remove current selection
+      selectedList.style.backgroundColor = ""; // Remove current selection
       selectedList = selectedList.nextElementSibling; // Update reference
-      selectedList.classList.add("bg-gray-500"); // Highlight new selection
+      selectedList.style.backgroundColor = "gray"; // Highlight new selection
     }
   }
 });

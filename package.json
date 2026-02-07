@@ -2,6 +2,7 @@
   "name": "fuzzy-tab-search",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "webpack --config webpack.config.js",

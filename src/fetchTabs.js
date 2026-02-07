@@ -1,3 +1,3 @@
 export function fetchTabs() {
-  return browser.tabs.query();
+  return chrome.tabs.query();
 }

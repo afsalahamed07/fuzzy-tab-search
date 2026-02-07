@@ -1,10 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 .fuzzy-tab-search-parent {
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
   @apply fixed flex flex-col gap-4 p-4 top-1/2 left-1/2 z-[999999] -translate-x-1/2 -translate-y-1/2
-  bg-[#191724]/95 w-3/4 h-3/4 text-lg font-mono rounded-lg;
+  bg-[#191724] w-3/4 h-3/4 text-lg font-mono rounded-lg;
 }
 
 .fuzzy-tab-search-tab-list {

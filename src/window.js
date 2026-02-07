@@ -5,7 +5,7 @@ function openCenteredPopup() {
   const top = Math.round((screen.availHeight - height) / 2);
 
   // Create the popup window
-  browser.windows.create({
+  chrome.windows.create({
     url: "index.html", // URL of the popup
     type: "popup",
     width: width,
