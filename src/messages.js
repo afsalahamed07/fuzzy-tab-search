@@ -11,11 +11,19 @@ function sendMessage(action, payload = {}) {
   });
 }
 
+function postMessage(action, payload = {}) {
+  chrome.runtime.sendMessage({ action, ...payload });
+}
+
 export async function getTabs() {
   const tabs = await sendMessage("getTabs");
   return Array.isArray(tabs) ? tabs : [];
 }
 
 export function highlightTab(tabIndex) {
-  chrome.runtime.sendMessage({ action: "highlightTab", tabIndex });
+  postMessage("highlightTab", { tabIndex });
+}
+
+export function closeTab(tabId) {
+  return sendMessage("closeTab", { tabId });
 }

@@ -19,12 +19,18 @@ export function bindGlobalShortcuts({ isOpen, openOverlay, closeOverlay }) {
 
 export function bindSearchShortcuts(
   searchInput,
-  { selectCurrent, selectPrevious, selectNext },
+  { selectCurrent, selectPrevious, selectNext, closeCurrent },
 ) {
   searchInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
       selectCurrent();
+      return;
+    }
+
+    if (isCtrlKey(event, "x")) {
+      event.preventDefault();
+      closeCurrent();
       return;
     }
 

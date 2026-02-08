@@ -5,7 +5,11 @@ function sendAllTabs(sendResponse) {
 }
 
 function focusTab(tabIndex) {
-  chrome.tabs.highlight({ tabs: tabIndex });
+  return chrome.tabs.highlight({ tabs: tabIndex });
+}
+
+function closeTab(tabId) {
+  return chrome.tabs.remove(tabId);
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -15,7 +19,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 
   if (message.action === "highlightTab") {
-    focusTab(message.tabIndex);
+    focusTab(message.tabIndex)
+      .then(() => sendResponse({ ok: true }))
+      .catch((error) => sendResponse({ ok: false, error: String(error) }));
+    return true;
+  }
+
+  if (message.action === "closeTab") {
+    closeTab(message.tabId)
+      .then(() => sendResponse({ ok: true }))
+      .catch((error) => sendResponse({ ok: false, error: String(error) }));
+    return true;
   }
 
   return false;

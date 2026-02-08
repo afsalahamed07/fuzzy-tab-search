@@ -6,9 +6,14 @@ import {
 } from "./dom.js";
 import { formatTabLabel } from "./format.js";
 import { bindGlobalShortcuts, bindSearchShortcuts } from "./keyboard.js";
-import { getTabs, highlightTab } from "./messages.js";
+import {
+  closeTab as closeTabById,
+  getTabs,
+  highlightTab as highlightTabByIndex,
+} from "./messages.js";
 import {
   clickSelectedItem,
+  getSelectedItem,
   moveSelection,
   selectFirstItem,
 } from "./navigation.js";
@@ -28,16 +33,45 @@ function closeOverlay() {
   unmountOverlay(overlay);
 }
 
-function activateTab(tabIndex) {
-  highlightTab(tabIndex);
-  closeOverlay();
+async function activateTab(tabIndex) {
+  try {
+    highlightTabByIndex(tabIndex);
+    closeOverlay();
+  } catch (error) {
+    console.error("Failed to activate tab:", error);
+  }
+}
+
+async function closeCurrentTab() {
+  const selectedItem = getSelectedItem(overlay.tabList);
+
+  if (!selectedItem) {
+    return;
+  }
+
+  const tabId = Number(selectedItem.dataset.tabId);
+
+  if (Number.isNaN(tabId)) {
+    return;
+  }
+
+  try {
+    await closeTabById(tabId);
+    await refreshTabs();
+    overlay.searchInput.focus();
+  } catch (error) {
+    console.error("Failed to close tab:", error);
+  }
 }
 
 function createTabItem(tab) {
   const item = document.createElement("li");
   item.classList.add("fuzzy-tab-search-tab-list-item");
+  item.dataset.tabId = String(tab.id);
   item.textContent = formatTabLabel(tab);
-  item.addEventListener("click", () => activateTab(tab.index));
+  item.addEventListener("click", () => {
+    void activateTab(tab.index);
+  });
   return item;
 }
 
@@ -77,4 +111,7 @@ bindSearchShortcuts(overlay.searchInput, {
   selectCurrent: () => clickSelectedItem(overlay.tabList),
   selectPrevious: () => moveSelection(overlay.tabList, "previous"),
   selectNext: () => moveSelection(overlay.tabList, "next"),
+  closeCurrent: () => {
+    void closeCurrentTab();
+  },
 });

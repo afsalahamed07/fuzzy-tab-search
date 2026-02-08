@@ -1,6 +1,6 @@
 const selectedClassName = "is-selected";
 
-function getSelectedItem(tabList) {
+export function getSelectedItem(tabList) {
   return tabList.querySelector(`.${selectedClassName}`);
 }
 
