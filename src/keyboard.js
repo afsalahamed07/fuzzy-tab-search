@@ -2,14 +2,8 @@ function isCtrlKey(event, key) {
   return event.ctrlKey && event.key.toLowerCase() === key;
 }
 
-export function bindGlobalShortcuts({ isOpen, openOverlay, closeOverlay }) {
+export function bindGlobalShortcuts({ isOpen, closeOverlay }) {
   document.addEventListener("keydown", (event) => {
-    if (isCtrlKey(event, "k")) {
-      event.preventDefault();
-      openOverlay();
-      return;
-    }
-
     if (event.key === "Escape" && isOpen()) {
       event.preventDefault();
       closeOverlay();

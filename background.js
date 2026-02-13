@@ -12,6 +12,25 @@ function closeTab(tabId) {
   return chrome.tabs.remove(tabId);
 }
 
+function openOverlayInActiveTab() {
+  chrome.tabs
+    .query({ active: true, currentWindow: true })
+    .then(([activeTab]) => {
+      if (!activeTab?.id) {
+        return;
+      }
+
+      return chrome.tabs.sendMessage(activeTab.id, { action: "openOverlay" });
+    })
+    .catch(() => {});
+}
+
+chrome.commands.onCommand.addListener((command) => {
+  if (command === "open-fuzzy-tab-search") {
+    openOverlayInActiveTab();
+  }
+});
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "getTabs") {
     sendAllTabs(sendResponse);

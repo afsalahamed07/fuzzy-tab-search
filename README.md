@@ -6,7 +6,7 @@ Inspired by Neovim Telescope and fzf-style workflows.
 
 ## Features
 
-- Open overlay with `Ctrl+K`
+- Open overlay with `Cmd+Shift+K` (macOS) or `Ctrl+Shift+K` (Windows/Linux)
 - Fuzzy search by tab title and URL
 - Navigate results with `Ctrl+N` and `Ctrl+P`
 - Open selected tab with `Enter`

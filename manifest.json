@@ -12,5 +12,14 @@
       "js": ["content-script.js"],
       "css": ["styles.css"]
     }
-  ]
+  ],
+  "commands": {
+    "open-fuzzy-tab-search": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+K",
+        "mac": "Command+Shift+K"
+      },
+      "description": "Open Fuzzy Tab Finder"
+    }
+  }
 }

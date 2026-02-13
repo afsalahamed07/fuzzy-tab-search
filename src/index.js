@@ -101,10 +101,12 @@ async function openOverlay() {
 
 overlay.searchInput.addEventListener("input", renderTabs);
 
-bindGlobalShortcuts({
-  isOpen,
-  openOverlay,
-  closeOverlay,
+bindGlobalShortcuts({ isOpen, closeOverlay });
+
+chrome.runtime.onMessage.addListener((message) => {
+  if (message.action === "openOverlay") {
+    void openOverlay();
+  }
 });
 
 bindSearchShortcuts(overlay.searchInput, {
