@@ -1,40 +1,57 @@
-function createOverlayElement(className, tagName) {
-  const element = document.createElement(tagName);
-  element.classList.add(className);
-  return element;
-}
+import { createTabSearchOverlay } from "./components/tab-search-overlay/index.js";
 
 export function createOverlay() {
-  const container = createOverlayElement("fuzzy-tab-search-parent", "div");
-  container.tabIndex = 0;
+  const isHtmlDocument = document instanceof HTMLDocument;
+  const hasShadowDom = typeof Element !== "undefined" && "attachShadow" in Element.prototype;
 
-  const tabList = createOverlayElement("fuzzy-tab-search-tab-list", "ul");
+  console.log("[fts/dom] createOverlay checks", {
+    isHtmlDocument,
+    hasShadowDom,
+    contentType: document.contentType,
+    href: location.href,
+  });
 
-  const searchInput = createOverlayElement(
-    "fuzzy-tab-search-search-box",
-    "input",
-  );
-  searchInput.autofocus = true;
-  searchInput.placeholder = "Search open tabs...";
+  if (!isHtmlDocument || !hasShadowDom) {
+    console.warn("[fts/dom] createOverlay skipped");
+    return null;
+  }
 
-  container.appendChild(searchInput);
-  container.appendChild(tabList);
-
-  return { container, tabList, searchInput };
+  console.log("[fts/dom] createOverlay element");
+  return createTabSearchOverlay();
 }
 
 export function isOverlayMounted(overlay) {
-  return document.body.contains(overlay.container);
+  if (!overlay) {
+    return false;
+  }
+
+  return document.body.contains(overlay);
 }
 
 export function mountOverlay(overlay) {
-  if (!isOverlayMounted(overlay)) {
-    document.body.appendChild(overlay.container);
+  if (!overlay) {
+    console.warn("[fts/dom] mount skipped: no overlay");
+    return;
   }
+
+  if (!isOverlayMounted(overlay)) {
+    console.log("[fts/dom] append overlay");
+    document.body.appendChild(overlay);
+  }
+
+  console.log("[fts/dom] open overlay");
+  overlay.open();
 }
 
 export function unmountOverlay(overlay) {
+  if (!overlay) {
+    console.warn("[fts/dom] unmount skipped: no overlay");
+    return;
+  }
+
   if (isOverlayMounted(overlay)) {
-    document.body.removeChild(overlay.container);
+    console.log("[fts/dom] remove overlay");
+    overlay.close();
+    document.body.removeChild(overlay);
   }
 }

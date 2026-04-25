@@ -17,12 +17,15 @@ function openOverlayInActiveTab() {
     .query({ active: true, currentWindow: true })
     .then(([activeTab]) => {
       if (!activeTab?.id) {
+        console.warn("[fts/bg] no active tab id");
         return;
       }
 
       return chrome.tabs.sendMessage(activeTab.id, { action: "openOverlay" });
     })
-    .catch(() => {});
+    .catch((error) => {
+      console.error("[fts/bg] openOverlay failed", error);
+    });
 }
 
 chrome.commands.onCommand.addListener((command) => {
