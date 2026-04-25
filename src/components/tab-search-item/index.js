@@ -1,4 +1,16 @@
-import { tabSearchItemStyles } from "./styles.js";
+import styles from "./styles.css?raw";
+
+const template = document.createElement("template");
+template.innerHTML = `
+  <style>${styles}</style>
+  <button type="button">
+    <span class="meta">
+      <span class="title"></span>
+      <span class="hostname"></span>
+    </span>
+    <span class="badge"></span>
+  </button>
+`;
 
 function getHostname(url) {
   try {
@@ -11,27 +23,12 @@ function getHostname(url) {
 export function createTabSearchItem(tab) {
   const host = document.createElement("div");
   const shadowRoot = host.attachShadow({ mode: "open" });
-  const style = document.createElement("style");
-  style.textContent = tabSearchItemStyles;
+  shadowRoot.append(template.content.cloneNode(true));
 
-  const button = document.createElement("button");
-  button.type = "button";
-
-  const meta = document.createElement("span");
-  meta.className = "meta";
-
-  const titleElement = document.createElement("span");
-  titleElement.className = "title";
-
-  const hostnameElement = document.createElement("span");
-  hostnameElement.className = "hostname";
-
-  const badgeElement = document.createElement("span");
-  badgeElement.className = "badge";
-
-  meta.append(titleElement, hostnameElement);
-  button.append(meta, badgeElement);
-  shadowRoot.append(style, button);
+  const button = shadowRoot.querySelector("button");
+  const titleElement = shadowRoot.querySelector(".title");
+  const hostnameElement = shadowRoot.querySelector(".hostname");
+  const badgeElement = shadowRoot.querySelector(".badge");
 
   host.className = "fts-tab-item";
   host.dataset.tabId = tab?.id != null ? String(tab.id) : "";

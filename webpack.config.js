@@ -8,6 +8,15 @@ export default {
   mode: "production",
   entry: "./src/index.js",
   devtool: "inline-source-map",
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        resourceQuery: /raw/,
+        type: "asset/source",
+      },
+    ],
+  },
   output: {
     filename: "content-script.js",
     path: __dirname,

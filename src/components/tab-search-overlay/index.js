@@ -1,48 +1,34 @@
 import { createTabSearchItem } from "../tab-search-item/index.js";
-import { tabSearchOverlayStyles } from "./styles.js";
+import styles from "./styles.css?raw";
 
-/**
- * Web component for the tab search overlay. Contains the search input and list of tabs.
- * attach a shadow DOM to isolate styles and markup. The component exposes methods to set the list of tabs,
- * open/close the overlay, and focus the search input.
- * @returns {HTMLElement} the overlay element
- */
+const template = document.createElement("template");
+template.innerHTML = `
+  <style>${styles}</style>
+  <div class="backdrop"></div>
+  <section class="panel">
+    <div class="header">
+      <strong>Fuzzy Tab Finder</strong>
+      <span>Rose Pine Moon</span>
+    </div>
+    <input class="search" type="text" placeholder="Search open tabs..." />
+    <div class="list"></div>
+    <div class="footer">
+      <span class="hint"><span class="key">Enter</span> open</span>
+      <span class="hint"><span class="key">Ctrl N/P</span> move</span>
+      <span class="hint"><span class="key">Ctrl X</span> close tab</span>
+      <span class="hint"><span class="key">Esc</span> dismiss</span>
+    </div>
+  </section>
+`;
+
 export function createTabSearchOverlay() {
   const host = document.createElement("div");
   const shadowRoot = host.attachShadow({ mode: "open" });
-  const style = document.createElement("style");
-  style.textContent = tabSearchOverlayStyles;
+  shadowRoot.append(template.content.cloneNode(true));
 
-  const backdrop = document.createElement("div");
-  backdrop.className = "backdrop";
-
-  const panel = document.createElement("section");
-  panel.className = "panel";
-
-  const header = document.createElement("div");
-  header.className = "header";
-  header.innerHTML =
-    "<strong>Fuzzy Tab Finder</strong><span>Rose Pine Moon</span>";
-
-  const searchInput = document.createElement("input");
-  searchInput.className = "search";
-  searchInput.type = "text";
-  searchInput.placeholder = "Search open tabs...";
-
-  const tabList = document.createElement("div");
-  tabList.className = "list";
-
-  const footer = document.createElement("div");
-  footer.className = "footer";
-  footer.innerHTML = [
-    '<span class="hint"><span class="key">Enter</span> open</span>',
-    '<span class="hint"><span class="key">Ctrl N/P</span> move</span>',
-    '<span class="hint"><span class="key">Ctrl X</span> close tab</span>',
-    '<span class="hint"><span class="key">Esc</span> dismiss</span>',
-  ].join("");
-
-  panel.append(header, searchInput, tabList, footer);
-  shadowRoot.append(style, backdrop, panel);
+  const backdrop = shadowRoot.querySelector(".backdrop");
+  const searchInput = shadowRoot.querySelector(".search");
+  const tabList = shadowRoot.querySelector(".list");
 
   host.className = "fts-overlay-host";
 
