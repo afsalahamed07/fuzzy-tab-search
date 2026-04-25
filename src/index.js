@@ -18,17 +18,7 @@ import {
 } from "./navigation.js";
 import { filterTabs } from "./search.js";
 
-console.log("[fts/cs] init", {
-  href: location.href,
-  contentType: document.contentType,
-  readyState: document.readyState,
-});
-
 const overlay = createOverlay();
-
-console.log("[fts/cs] overlay created", {
-  hasOverlay: Boolean(overlay),
-});
 
 const state = {
   tabs: [],
@@ -43,8 +33,6 @@ function closeOverlay() {
 }
 
 async function activateTab(tabIndex) {
-  console.log("[fts/cs] activateTab", { tabIndex });
-
   try {
     highlightTabByIndex(tabIndex);
     closeOverlay();
@@ -60,10 +48,6 @@ async function closeCurrentTab() {
   }
 
   const selectedItem = getSelectedItem(overlay.tabList);
-
-  console.log("[fts/cs] closeCurrentTab selected", {
-    hasSelectedItem: Boolean(selectedItem),
-  });
 
   if (!selectedItem) {
     return;
@@ -91,21 +75,13 @@ function renderTabs() {
   }
 
   const filteredTabs = filterTabs(state.tabs, overlay.query);
-  console.log("[fts/cs] renderTabs", {
-    query: overlay.query,
-    totalTabs: state.tabs.length,
-    filteredTabs: filteredTabs.length,
-  });
   overlay.setTabs(filteredTabs);
   selectFirstItem(overlay.tabList);
 }
 
 async function refreshTabs() {
-  console.log("[fts/cs] refreshTabs start");
-
   try {
     state.tabs = await getTabs();
-    console.log("[fts/cs] refreshTabs success", { count: state.tabs.length });
   } catch (error) {
     state.tabs = [];
     console.error("Failed to fetch tabs:", error);
@@ -120,37 +96,16 @@ async function openOverlay() {
     return;
   }
 
-  console.log("[fts/cs] openOverlay start");
   mountOverlay(overlay);
-  console.log("[fts/cs] overlay mounted state", {
-    inDom: document.body?.contains(overlay),
-    bodyExists: Boolean(document.body),
-  });
   overlay.query = "";
   await refreshTabs();
   overlay.focusSearch();
-  requestAnimationFrame(() => {
-    const rect = overlay.getBoundingClientRect();
-
-    console.log("[fts/cs] overlay layout", {
-      className: overlay.className,
-      width: rect.width,
-      height: rect.height,
-      top: rect.top,
-      left: rect.left,
-      display: getComputedStyle(overlay).display,
-      zIndex: getComputedStyle(overlay).zIndex,
-    });
-  });
-  console.log("[fts/cs] openOverlay complete");
 }
 
 if (overlay) {
-  console.log("[fts/cs] binding overlay listeners");
   overlay.searchInput.addEventListener("input", renderTabs);
   overlay.addEventListener("overlay-close", closeOverlay);
   overlay.addEventListener("tab-activate", (event) => {
-    console.log("[fts/cs] tab-activate event", event.detail);
     void activateTab(event.detail.tab.index);
   });
 }
@@ -158,8 +113,6 @@ if (overlay) {
 bindGlobalShortcuts({ isOpen, closeOverlay });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log("[fts/cs] runtime message", message);
-
   if (message.action === "openOverlay") {
     const diagnostics = {
       hasOverlay: Boolean(overlay),
@@ -171,8 +124,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       bodyExists: Boolean(document.body),
       href: location.href,
     };
-
-    console.log("[fts/cs] openOverlay diagnostics", diagnostics);
 
     void openOverlay()
       .then(() => {
@@ -198,7 +149,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 if (overlay) {
-  console.log("[fts/cs] binding search shortcuts");
   bindSearchShortcuts(overlay.searchInput, {
     selectCurrent: () => clickSelectedItem(overlay.tabList),
     selectPrevious: () => moveSelection(overlay.tabList, "previous"),

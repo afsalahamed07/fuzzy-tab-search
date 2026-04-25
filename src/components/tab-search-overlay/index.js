@@ -1,6 +1,12 @@
 import { createTabSearchItem } from "../tab-search-item/index.js";
 import { tabSearchOverlayStyles } from "./styles.js";
 
+/**
+ * Web component for the tab search overlay. Contains the search input and list of tabs.
+ * attach a shadow DOM to isolate styles and markup. The component exposes methods to set the list of tabs,
+ * open/close the overlay, and focus the search input.
+ * @returns {HTMLElement} the overlay element
+ */
 export function createTabSearchOverlay() {
   const host = document.createElement("div");
   const shadowRoot = host.attachShadow({ mode: "open" });

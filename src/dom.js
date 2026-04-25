@@ -1,22 +1,19 @@
 import { createTabSearchOverlay } from "./components/tab-search-overlay/index.js";
 
+/**
+ * returns a new overlay element or null if the environment is not supported
+ * @returns {HTMLElement|null}
+ */
 export function createOverlay() {
   const isHtmlDocument = document instanceof HTMLDocument;
-  const hasShadowDom = typeof Element !== "undefined" && "attachShadow" in Element.prototype;
-
-  console.log("[fts/dom] createOverlay checks", {
-    isHtmlDocument,
-    hasShadowDom,
-    contentType: document.contentType,
-    href: location.href,
-  });
+  const hasShadowDom =
+    typeof Element !== "undefined" && "attachShadow" in Element.prototype;
 
   if (!isHtmlDocument || !hasShadowDom) {
     console.warn("[fts/dom] createOverlay skipped");
     return null;
   }
 
-  console.log("[fts/dom] createOverlay element");
   return createTabSearchOverlay();
 }
 
@@ -35,11 +32,9 @@ export function mountOverlay(overlay) {
   }
 
   if (!isOverlayMounted(overlay)) {
-    console.log("[fts/dom] append overlay");
     document.body.appendChild(overlay);
   }
 
-  console.log("[fts/dom] open overlay");
   overlay.open();
 }
 
@@ -50,7 +45,6 @@ export function unmountOverlay(overlay) {
   }
 
   if (isOverlayMounted(overlay)) {
-    console.log("[fts/dom] remove overlay");
     overlay.close();
     document.body.removeChild(overlay);
   }
