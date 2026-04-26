@@ -20,37 +20,38 @@ function getHostname(url) {
   }
 }
 
-export function createTabSearchItem(tab) {
-  const host = document.createElement("div");
-  const shadowRoot = host.attachShadow({ mode: "open" });
-  shadowRoot.append(template.content.cloneNode(true));
+export class TabSearchItem {
+  constructor(tab) {
+    this.tab = tab;
+    this.host = document.createElement("div");
+    this.shadowRoot = this.host.attachShadow({ mode: "open" });
+    this.shadowRoot.append(template.content.cloneNode(true));
 
-  const button = shadowRoot.querySelector("button");
-  const titleElement = shadowRoot.querySelector(".title");
-  const hostnameElement = shadowRoot.querySelector(".hostname");
-  const badgeElement = shadowRoot.querySelector(".badge");
+    this.button = this.shadowRoot.querySelector("button");
+    this.titleElement = this.shadowRoot.querySelector(".title");
+    this.hostnameElement = this.shadowRoot.querySelector(".hostname");
+    this.badgeElement = this.shadowRoot.querySelector(".badge");
 
-  host.className = "fts-tab-item";
-  host.dataset.tabId = tab?.id != null ? String(tab.id) : "";
+    this.host.className = "fts-tab-item";
+    this.host.dataset.tabId = tab?.id != null ? String(tab.id) : "";
 
-  titleElement.textContent = tab?.title || "untitled";
-  hostnameElement.textContent = getHostname(tab?.url);
-  badgeElement.textContent = tab?.index != null ? `#${tab.index + 1}` : "";
-  button.title = `${hostnameElement.textContent} : ${titleElement.textContent}`;
+    this.titleElement.textContent = tab?.title || "untitled";
+    this.hostnameElement.textContent = getHostname(tab?.url);
+    this.badgeElement.textContent = tab?.index != null ? `#${tab.index + 1}` : "";
+    this.button.title = `${this.hostnameElement.textContent} : ${this.titleElement.textContent}`;
 
-  host.addEventListener("click", () => {
-    if (!tab) {
-      return;
-    }
+    this.host.addEventListener("click", () => {
+      if (!this.tab) {
+        return;
+      }
 
-    host.dispatchEvent(
-      new CustomEvent("tab-activate", {
-        bubbles: true,
-        composed: true,
-        detail: { tab },
-      }),
-    );
-  });
-
-  return host;
+      this.host.dispatchEvent(
+        new CustomEvent("tab-activate", {
+          bubbles: true,
+          composed: true,
+          detail: { tab: this.tab },
+        }),
+      );
+    });
+  }
 }

@@ -24,3 +24,7 @@ npm run compile
 ```
 
 Load the extension as unpacked in Chrome.
+
+# TODO
+
+## Fix interacting with the host DOM when the overlay is open.

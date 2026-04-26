@@ -130,7 +130,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         sendResponse({
           ...diagnostics,
           opened: true,
-          overlayMounted: Boolean(overlay && document.body?.contains(overlay)),
+          overlayMounted: Boolean(
+            overlay && document.body?.contains(overlay.host),
+          ),
         });
       })
       .catch((error) => {
@@ -149,7 +151,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 if (overlay) {
-  bindSearchShortcuts(overlay.searchInput, {
+  bindSearchShortcuts({ isOpen }, {
     selectCurrent: () => clickSelectedItem(overlay.tabList),
     selectPrevious: () => moveSelection(overlay.tabList, "previous"),
     selectNext: () => moveSelection(overlay.tabList, "next"),

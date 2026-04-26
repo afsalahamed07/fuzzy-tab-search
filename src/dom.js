@@ -1,8 +1,8 @@
-import { createTabSearchOverlay } from "./components/tab-search-overlay/index.js";
+import { TabSearchOverlay } from "./components/tab-search-overlay/index.js";
 
 /**
  * returns a new overlay element or null if the environment is not supported
- * @returns {HTMLElement|null}
+ * @returns {TabSearchOverlay|null}
  */
 export function createOverlay() {
   const isHtmlDocument = document instanceof HTMLDocument;
@@ -14,7 +14,7 @@ export function createOverlay() {
     return null;
   }
 
-  return createTabSearchOverlay();
+  return new TabSearchOverlay();
 }
 
 export function isOverlayMounted(overlay) {
@@ -22,7 +22,7 @@ export function isOverlayMounted(overlay) {
     return false;
   }
 
-  return document.body.contains(overlay);
+  return document.body.contains(overlay.host);
 }
 
 export function mountOverlay(overlay) {
@@ -32,7 +32,7 @@ export function mountOverlay(overlay) {
   }
 
   if (!isOverlayMounted(overlay)) {
-    document.body.appendChild(overlay);
+    document.body.appendChild(overlay.host);
   }
 
   overlay.open();
@@ -46,6 +46,6 @@ export function unmountOverlay(overlay) {
 
   if (isOverlayMounted(overlay)) {
     overlay.close();
-    document.body.removeChild(overlay);
+    document.body.removeChild(overlay.host);
   }
 }
